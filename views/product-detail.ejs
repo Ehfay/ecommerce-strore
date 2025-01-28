@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title><%= product.name %> - Skincare Bliss</title>
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <%- include('partials/header') %>
+
+  <main class="product-detail">
+
+    
+    <div class="breadcrumb">
+      <a href="/products">Products</a> >
+      <a href="/products/<%= product.category %>"><%= product.category %></a> >
+      <a href="/products/<%= product.category %>/<%= product.subcategory %>">
+        <%= product.subcategory %>
+      </a> >
+      <%= product.name %>
+    </div>
+
+    
+    <div class="product-detail-container">
+      <div class="product-header">
+        <div class="product-title-section">
+          <h1 class="product-name"><%= product.name %></h1>
+          <div class="product-rating">
+            <span class="stars">
+              <span class="full-stars">★★★★</span> 
+              <span class="half-star">★</span> 
+              <span class="empty-stars">☆</span>
+            </span>
+            (4.5)
+          </div>
+          
+          
+        </div>
+      </div>
+
+      <div class="product-main">
+        <div class="product-image">
+          <img src="/images/products/<%= product.image %>" alt="<%= product.name %> image" />
+        </div>
+
+        
+        <div class="product-description">
+          <p><%= product.description %></p>
+          <div class="product-size">
+            <span>Size</span>: <%= product.size || "N/A" %>
+          </div>
+          <p class="product-price">₦<%= product.price %></p>
+
+        
+          <form action="/cart/add" method="POST">
+            <input type="hidden" name="productId" value="<%= product.id %>">
+            <div class="quantity-section">
+              <label for="quantity">Quantity:</label>
+              <input type="number" id="quantity" name="quantity" min="1" value="1" required>
+            </div>            
+            <button type="submit" class="btn">Add to Cart</button>
+          </form>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <%- include('partials/footer') %>
+</body>
+</html>

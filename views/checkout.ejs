@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Checkout - Ehfay Skincare Bliss</title>
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <%- include('partials/header') %>
+
+  <main class="checkout-section">
+    <h1>Checkout</h1>
+
+    
+    <ul class="cart-items">
+      <% cartItems.forEach(item => { %>
+        <li>
+          <img src="/images/products/<%= item.image %>" alt="<%= item.name %>" />
+          <div>
+            <h4><%= item.name %></h4>
+            <p>Quantity: <%= item.quantity %></p>
+            <p>Size: <%= item.size %></p>
+            <p>Price: <%= item.price %></p>
+            <p>Subtotal: <%= item.subtotal %></p>
+          </div>
+        </li>
+      <% }) %>
+    </ul>
+
+    <p><strong>Total Price:</strong> <%= totalPrice %></p>
+
+    
+    <form action="/checkout/confirm" method="POST">
+      <input type="text" name="customer_name" placeholder="Your Name" required />
+      <input type="email" name="email" placeholder="Your Email" required />
+      <textarea name="address" placeholder="Delivery Address" required></textarea>
+    
+      <label for="paymentMethod">Select Payment Method:</label>
+      <select name="payment_method" id="paymentMethod" required>
+        <option value="bank_transfer">Bank Transfer</option>
+        <option value="card">Card</option>
+      </select>
+    
+      <button type="submit" class="btn">Confirm Payment</button>
+    </form>
+    
+  </main>
+
+  <%- include('partials/footer') %>
+</body>
+</html>

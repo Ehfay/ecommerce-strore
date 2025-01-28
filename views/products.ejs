@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Products - Skincare Bliss</title>
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <%- include('partials/header') %>
+
+  <main class="products-grid">
+    <% products.forEach(product => { %>
+      <div class="product-card">
+        <img src="/images/products/<%= product.image %>" alt="<%= product.name %> image" class="zoom">
+        <h1 class="product-name"><%= product.name %></h1>
+        <p class="product-price">₦<%= product.price %></p>
+        <p class="product-description"><%= product.description %></p>
+        
+        <a href="/products/<%= product.id %>" class="btn">View Details</a>
+      </div>
+    <% }) %>
+  </main>
+
+  <%- include('partials/footer') %>
+</body>
+</html>
