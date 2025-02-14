@@ -1,8 +1,8 @@
 import express from 'express';
 import bodyParser from 'body-parser';
 import session from 'express-session';
-import passport from 'passport';
-import pg from 'pg'; // Default import for pg
+import passport from './config/passportconfig.js';
+import pg from 'pg'; 
 import dotenv from 'dotenv';
 import authRoutes from './routes/auth.js';
 import productRoutes from './routes/products.js';
@@ -14,7 +14,6 @@ dotenv.config();
 const app = express();
 const port = 3000;
 
-
 const { Pool } = pg; 
 const pool = new Pool({
   user: process.env.DB_USER,
@@ -24,10 +23,8 @@ const pool = new Pool({
   port: process.env.DB_PORT,
 });
 
-
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
-
 
 app.use(
   session({
@@ -37,32 +34,26 @@ app.use(
   })
 );
 
-
 app.use(passport.initialize());
 app.use(passport.session());
 
-
 app.set('view engine', 'ejs');
-
-
 app.use(express.static('public'));
-
 
 app.get('/', (req, res) => {
   res.render('home'); 
 });
 
-
+// ✅ Correct Route Mounting (Make sure auth.js handles '/register' and '/login')
 app.use('/auth', authRoutes); 
 app.use('/products', productRoutes); 
 app.use('/cart', cartRoutes); 
 app.use("/checkout", checkoutRouter);
 
-
+// 404 Handler
 app.use((req, res) => {
   res.status(404).send('Page not found');
 });
-
 
 app.listen(port, () => {
   console.log(`Server running on port ${port}`);
@@ -72,10 +63,8 @@ pool.query('SELECT NOW()', (err, res) => {
   if (err) {
     console.error('Database connection error:', err);
   } else if (process.env.NODE_ENV !== 'production') {
-    // Only log the database connection in non-production environments
     console.log('Database connected at:', res.rows[0].now);
   }
 });
 
 
-export default app;
