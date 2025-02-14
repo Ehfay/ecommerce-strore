@@ -1,9 +1,8 @@
 import passport from "passport";
 import { Strategy as LocalStrategy } from "passport-local";
 import bcrypt from "bcryptjs";
-import db from "../db/db.js"; // Import database connection
+import db from "../db/db.js"; 
 
-// Local Strategy for email & password authentication
 passport.use(
   new LocalStrategy({ usernameField: "email" }, async (email, password, done) => {
     try {
@@ -26,12 +25,12 @@ passport.use(
   })
 );
 
-// Serialize user into the session
+
 passport.serializeUser((user, done) => {
   done(null, user.id);
 });
 
-// Deserialize user from session
+
 passport.deserializeUser(async (id, done) => {
   try {
     const result = await db.query("SELECT * FROM users WHERE id = $1", [id]);

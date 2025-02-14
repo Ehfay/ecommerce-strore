@@ -5,12 +5,12 @@ import db from "../db/db.js";
 
 const router = express.Router();
 
-// ✅ Render the register page
+
 router.get("/register", (req, res) => {
   res.render("register");
 });
 
-// ✅ Handle user registration
+
 router.post("/register", async (req, res) => {
   const { email, password } = req.body;
   try {
@@ -28,17 +28,27 @@ router.post("/register", async (req, res) => {
   }
 });
 
-// ✅ Render the login page
+
 router.get("/login", (req, res) => {
   res.render("login");
 });
 
-// ✅ Handle login
+
 router.post("/login",
   passport.authenticate("local", {
     successRedirect: "/",
     failureRedirect: "/auth/login",
   })
 );
+
+router.get("/home", (req, res) => {
+  console.log("User:", req.user); 
+  if (!req.isAuthenticated()) {
+    return res.redirect("/auth/login"); 
+  }
+  res.render("home", { user: req.user }); 
+});
+
+
 
 export default router;

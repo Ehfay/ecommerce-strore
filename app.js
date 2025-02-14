@@ -30,7 +30,7 @@ app.use(
   session({
     secret: process.env.SESSION_SECRET, 
     resave: false,
-    saveUninitialized: true,
+    saveUninitialized: false,
   })
 );
 
@@ -40,17 +40,21 @@ app.use(passport.session());
 app.set('view engine', 'ejs');
 app.use(express.static('public'));
 
-app.get('/', (req, res) => {
-  res.render('home'); 
+app.get("/", (req, res) => {
+  if (!req.isAuthenticated()) {
+    return res.redirect("/auth/login"); 
+  }
+  res.render("home", { user: req.user }); 
 });
 
-// ✅ Correct Route Mounting (Make sure auth.js handles '/register' and '/login')
+
+
 app.use('/auth', authRoutes); 
 app.use('/products', productRoutes); 
 app.use('/cart', cartRoutes); 
 app.use("/checkout", checkoutRouter);
 
-// 404 Handler
+
 app.use((req, res) => {
   res.status(404).send('Page not found');
 });
